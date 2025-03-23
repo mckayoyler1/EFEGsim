@@ -49,8 +49,8 @@ function data = computeSHExpansion(data)
     end
 
     %% Get fields for leastSquares
-    Vtrue  = evaluateSymbV(data.pos, data.V.symbV);
-    %Vtrue = computeYlm(3,2, data.sphpos(:,2), data.sphpos(:,3))/(data.cfg.headshape.radius^(3+1));
+    %Vtrue  = evaluateSymbV(data.pos, data.V.symbV);
+    Vtrue = computeYlm(1,1, data.sphpos(:,2), data.sphpos(:,3))/(data.cfg.headshape.radius^(1+1));
     Etrue  = evaluateSymbE(data.pos, data.E.symbE);
     data.V.true  = Vtrue;
     data.E.true  = Etrue;

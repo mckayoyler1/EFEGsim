@@ -93,5 +93,26 @@ end
 
 % Store the basis matrix in the data structure
 data.basis = Y;
+Y_angular = data.basis;
+
+% Get spherical coordinates and radius values
+r_vals = data.sphpos(:,1);
+
+% Initialize matrix for radial-adjusted basis
+YV = zeros(size(Y_angular));
+YE = zeros(size(Y_angular));
+% Apply radial scaling to each basis function
+col_idx = 1;
+for l = 0:data.expansionOrder
+    for m = -l:l
+        % Multiply by r^(l+1) to counteract the 1/r^(l+1) in the model
+        YV(:,col_idx) = Y_angular(:,col_idx) ./ (r_vals.^(l+1));
+        YE(:,col_idx) = Y_angular(:,col_idx) ./ (r_vals.^(l+2));
+
+        col_idx = col_idx + 1;
+    end
+end
+data.basis = YV;
+data.Ebasis = YE;
 
 end

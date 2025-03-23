@@ -5,7 +5,7 @@ function data = getEfromSHT(data)
 sphpos = data.sphpos;
 theta = sphpos(:,2);
 phi = sphpos(:,3);
-Y_N = data.basis;
+Y_N = data.Ebasis;
 
 [n,m] = size(sphpos);
 L = data.expansionOrder;
@@ -45,7 +45,7 @@ for l = 0:L
     end
 end
 eps0 = Constants.eps0;
-A_N = data.E_ScaledCoeffs;
+A_N = data.coeffs;
 Er = -1/eps0 * vr_N * A_N;
 Et = -1/eps0 * vt_N * A_N;
 Ep = -1/eps0 * vp_N * A_N;
