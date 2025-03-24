@@ -9,6 +9,7 @@ disp('Beginning Least Squares Transform')
     
     % Get the basis and function values
     Y = data.basis;  % Spherical harmonic basis
+    YV = data.scaledBasis;
     F = data.V.true;  % Function values at grid points
 
     % Check if we have weights for weighted least squares
@@ -20,7 +21,7 @@ disp('Beginning Least Squares Transform')
         % coeffs = (Y' * diag(weights) * Y) \ (Y' * diag(weights) * F);
 
         % Add Tikhonov regularization to least squares
-        lambda = 0.01;  % Regularization parameter
+        lambda = 0.0005;  % Regularization parameter
         L = data.expansionOrder;
 
         % Create regularization matrix (penalizes higher order harmonics more)
@@ -34,18 +35,18 @@ disp('Beginning Least Squares Transform')
         end
 
         % Apply regularized least squares
-        coeffs = (Y' * diag(weights) *  Y + lambda * reg_matrix) \ (Y' * diag(weights) * F);
+        coeffs = (YV' * diag(weights) *  YV + lambda * reg_matrix) \ (YV' * diag(weights) * F);
     else
         % Perform standard least squares transform
         disp('Using standard least squares (no weights)');
-        coeffs = pinv(Y) * F;
+        coeffs = pinv(YV) * F;
     end
     
     % Store the coefficients in the data structure
     data.coeffs = coeffs;
     
     % Calculate goodness of fit
-    F_reconstructed = Y * coeffs;
+    F_reconstructed = YV * coeffs;
     error = F - F_reconstructed;
     rmse = sqrt(mean(abs(error).^2));
     

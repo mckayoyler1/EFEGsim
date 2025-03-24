@@ -44,11 +44,15 @@ for l = 0:L
         Vlm(:,:,idx) = [vr_N(:,idx),vt_N(:,idx),vp_N(:,idx)];
     end
 end
+Rscale = data.Escaling;
+vr_N_scaled = vr_N ./ Rscale;
+vt_N_scaled = vt_N ./ Rscale;
+vp_N_scaled = vp_N ./ Rscale;
 eps0 = Constants.eps0;
-A_N = data.E_ScaledCoeffs;
-Er = -1/eps0 * vr_N * A_N;
-Et = -1/eps0 * vt_N * A_N;
-Ep = -1/eps0 * vp_N * A_N;
+A_N = data.coeffs;
+Er = -1/eps0 * vr_N_scaled * A_N;
+Et = -1/eps0 * vt_N_scaled * A_N;
+Ep = -1/eps0 * vp_N_scaled * A_N;
 complexE       = struct();
 complexE.r     = Er;
 complexE.theta = Et;

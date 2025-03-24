@@ -25,10 +25,10 @@ function data = calculateAnalyticalWeights(data)
 % end
 
 % Get spherical coordinates
-spherical_coords = data.sphpos;
-theta_values = spherical_coords(:,2);
+sphpos = data.sphpos;
+theta_values = sphpos(:,2);
 % phi_values = spherical_coords(:,3);
-
+r = data.cfg.headshape.radius;
 % Get grid dimensions
 n_theta = data.cfg.sensorArray.numTheta;
 n_phi = data.cfg.sensorArray.numPhi;
@@ -51,7 +51,6 @@ for i = 1:length(unique_thetas)
     theta_mask = abs(theta_values - current_theta) < 1e-10;
     
     % Calculate the weight for this theta
-    r = 1;
     theta_weight = r^2 * sin(current_theta) * dtheta * dphi;
     
     % Assign this weight to all points with this theta
@@ -59,16 +58,15 @@ for i = 1:length(unique_thetas)
 end
 
 % Normalize to hemisphere surface area
-r = 1;
 
-weights = 4*pi* r * weights / sum(weights);
+% weights = 4 * pi * r * weights / sum(weights);
 
 % Store the weights
 data.weights = weights;
 
 % ----- Special handling for pole points -----
 % Identify pole points (where θ is very close to 0)
-is_pole = abs(spherical_coords(:,2)) < 1e-10;
+is_pole = abs(sphpos(:,2)) < 1e-10;
 num_pole_points = sum(is_pole);
 
 if num_pole_points > 1

@@ -50,12 +50,12 @@ function data = computeSHExpansion(data)
 
     %% Get fields for leastSquares
     Vtrue  = evaluateSymbV(data.pos, data.V.symbV);
-    %Vtrue = computeYlm(3,2, data.sphpos(:,2), data.sphpos(:,3))/(data.cfg.headshape.radius^(3+1));
+    %Vtrue = real(computeYlm(2,2, data.sphpos(:,2), data.sphpos(:,3))/(data.cfg.headshape.radius^(2+1)));
     Etrue  = evaluateSymbE(data.pos, data.E.symbE);
     data.V.true  = Vtrue;
     data.E.true  = Etrue;
     
-    data = getSHBasis(data);
+    data = getScaledSHBasis(data);
     data = leastSquaresSHT(data);
     data = getVfromSHT(data);
     data = getEfromSHT(data);
