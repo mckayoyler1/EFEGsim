@@ -53,6 +53,7 @@ A_N = data.coeffs;
 Er = -1/eps0 * vr_N_scaled * A_N;
 Et = -1/eps0 * vt_N_scaled * A_N;
 Ep = -1/eps0 * vp_N_scaled * A_N;
+Ep = replaceNaNwithZero(Ep);
 complexE       = struct();
 complexE.r     = Er;
 complexE.theta = Et;
